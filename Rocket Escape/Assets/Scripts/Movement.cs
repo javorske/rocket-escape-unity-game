@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+    [SerializeField] float forceSpeed = 2f;
+    Rigidbody playersRigidbody;
     void Start()
     {
-        
+        playersRigidbody = GetComponent<Rigidbody>();
     }
     void Update()
     {
@@ -17,7 +19,7 @@ public class Movement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            Debug.Log("pressed space");
+            playersRigidbody.AddRelativeForce(Vector3.up * Time.deltaTime * forceSpeed * 1000);
         }
     }
     void ProcessRotation()
