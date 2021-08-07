@@ -5,6 +5,7 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     [SerializeField] float forceSpeed = 2f;
+    [SerializeField] float rotationSpeed = 2f;
     Rigidbody playersRigidbody;
     void Start()
     {
@@ -26,11 +27,16 @@ public class Movement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.A))
         {
-            Debug.Log("preseed left");
+            ApplyRotation(rotationSpeed);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            Debug.Log("preseed right");
+            ApplyRotation(-rotationSpeed);
         }
+    }
+
+    private void ApplyRotation(float rotaionThisFrame)
+    {
+        transform.Rotate(Vector3.forward * Time.deltaTime * rotaionThisFrame);
     }
 }
