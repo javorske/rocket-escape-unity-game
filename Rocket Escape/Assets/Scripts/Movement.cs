@@ -7,9 +7,11 @@ public class Movement : MonoBehaviour
     [SerializeField] float forceSpeed = 2f;
     [SerializeField] float rotationSpeed = 2f;
     Rigidbody playersRigidbody;
+    AudioSource audioSource;
     void Start()
     {
         playersRigidbody = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
     void Update()
     {
@@ -21,6 +23,14 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             playersRigidbody.AddRelativeForce(Vector3.up * Time.deltaTime * forceSpeed * 1000);
+            if (!audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
+        }
+        else
+        {
+            audioSource.Stop();
         }
     }
     void ProcessRotation()
