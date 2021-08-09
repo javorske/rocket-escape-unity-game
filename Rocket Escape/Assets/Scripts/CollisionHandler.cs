@@ -9,16 +9,18 @@ public class CollisionHandler : MonoBehaviour
 
     AudioSource audioSource;
 
+    bool isTransitioning;
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
     }
     void OnCollisionEnter(Collision collision)
     {
+        if (isTransitioning) return;
+
         switch (collision.gameObject.tag)
         {
             case "Friendly":
-                Debug.Log("It's just a freindly object");
                 break;
             case "Finish":
                 StartFinishSequence();
@@ -30,15 +32,19 @@ public class CollisionHandler : MonoBehaviour
     }
     void StartFinishSequence()
     {
+        isTransitioning = true;
+        audioSource.Stop();
+        audioSource.PlayOneShot(success);
         GetComponent<Movement>().enabled = false;
-        PlaySound(success);
-        Invoke("LoadNextLevel", GetClipLength(success));
+        Invoke(nameof(LoadNextLevel), GetClipLength(success) + 0.5f);
     }
     void StartCrashSequence()
     {
+        isTransitioning = true;
+        audioSource.Stop();
+        audioSource.PlayOneShot(deathExplosion);
         GetComponent<Movement>().enabled = false;
-        PlaySound(deathExplosion);
-        Invoke("ReloadLevel", GetClipLength(deathExplosion));
+        Invoke(nameof(ReloadLevel), GetClipLength(deathExplosion) + 0.5f);
     }
 
     void LoadNextLevel()
@@ -57,14 +63,6 @@ public class CollisionHandler : MonoBehaviour
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
-    }
-
-    void PlaySound(AudioClip audioClip)
-    {
-        if (!audioSource.isPlaying)
-        {
-            audioSource.PlayOneShot(audioClip);
-        }
     }
     
     float GetClipLength(AudioClip audioClip)
