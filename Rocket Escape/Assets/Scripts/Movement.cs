@@ -6,8 +6,11 @@ public class Movement : MonoBehaviour
 {
     [SerializeField] float forceSpeed = 2f;
     [SerializeField] float rotationSpeed = 2f;
+    [SerializeField] AudioClip mainEngine;
+
     Rigidbody playersRigidbody;
     AudioSource audioSource;
+
     void Start()
     {
         playersRigidbody = GetComponent<Rigidbody>();
@@ -25,7 +28,7 @@ public class Movement : MonoBehaviour
             playersRigidbody.AddRelativeForce(Vector3.up * Time.deltaTime * forceSpeed * 1000);
             if (!audioSource.isPlaying)
             {
-                audioSource.Play();
+                audioSource.PlayOneShot(mainEngine);
             }
         }
         else
