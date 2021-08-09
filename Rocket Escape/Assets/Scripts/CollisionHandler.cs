@@ -14,8 +14,13 @@ public class CollisionHandler : MonoBehaviour
                 Debug.Log("Touched the landing pad");
                 break;
             default:
-                SceneManager.LoadScene(0);
+                ReloadLevel();
                 break;
         }
+    }
+    void ReloadLevel()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
     }
 }
