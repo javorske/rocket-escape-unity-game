@@ -37,6 +37,8 @@ public class Movement : MonoBehaviour
 
     private void ApplyRotation(float rotaionThisFrame)
     {
+        playersRigidbody.freezeRotation = true;
         transform.Rotate(Vector3.forward * Time.deltaTime * rotaionThisFrame);
+        playersRigidbody.freezeRotation = false;
     }
 }
