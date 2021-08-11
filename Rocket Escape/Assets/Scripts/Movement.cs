@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,44 +21,67 @@ public class Movement : MonoBehaviour
         playersRigidbody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
     }
+
     void Update()
     {
         ProcessThrust();
         ProcessRotation();
     }
+
     void ProcessThrust()
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            mainBoost.Play();
-            playersRigidbody.AddRelativeForce(Vector3.up * forceSpeed * Time.deltaTime * 1000);
-            if (!audioSource.isPlaying)
-            {
-                audioSource.PlayOneShot(mainEngine);
-            }
+            StartThrusting();
         }
         else
         {
-            mainBoost.Stop();
-            audioSource.Stop();
+            StopThrusting();
         }
     }
+
     void ProcessRotation()
     {
         if (Input.GetKey(KeyCode.A))
         {
-            ApplyRotation(rotationSpeed, leftThruster);
+            RotateLeft();
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            ApplyRotation(-rotationSpeed, rightThruster);
+            RotateRight();
         }
     }
 
-    private void ApplyRotation(float rotaionThisFrame, ParticleSystem sideBooster)
+    void StartThrusting()
     {
-        playersRigidbody.freezeRotation = true;
+        mainBoost.Play();
+        playersRigidbody.AddRelativeForce(Vector3.up * forceSpeed * Time.deltaTime * 1000);
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(mainEngine);
+        }
+    }
+
+    void StopThrusting()
+    {
+        mainBoost.Stop();
+        audioSource.Stop();
+    }
+
+    void RotateLeft()
+    {
+        ApplyRotation(rotationSpeed, rightThruster);
+    }
+
+    void RotateRight()
+    {
+        ApplyRotation(-rotationSpeed, leftThruster);
+    }
+
+    void ApplyRotation(float rotaionThisFrame, ParticleSystem sideBooster)
+    {
         sideBooster.Play();
+        playersRigidbody.freezeRotation = true;
         transform.Rotate(Vector3.forward * Time.deltaTime * rotaionThisFrame);
         playersRigidbody.freezeRotation = false;
     }
