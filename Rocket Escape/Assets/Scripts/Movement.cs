@@ -8,6 +8,10 @@ public class Movement : MonoBehaviour
     [SerializeField] float rotationSpeed = 2f;
     [SerializeField] AudioClip mainEngine;
 
+    [SerializeField] ParticleSystem mainBoost;
+    [SerializeField] ParticleSystem leftThruster;
+    [SerializeField] ParticleSystem rightThruster;
+
     Rigidbody playersRigidbody;
     AudioSource audioSource;
 
@@ -25,7 +29,8 @@ public class Movement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            playersRigidbody.AddRelativeForce(Vector3.up * Time.deltaTime * forceSpeed * 1000);
+            mainBoost.Play();
+            playersRigidbody.AddRelativeForce(Vector3.up * forceSpeed * Time.deltaTime * 1000);
             if (!audioSource.isPlaying)
             {
                 audioSource.PlayOneShot(mainEngine);
@@ -33,6 +38,7 @@ public class Movement : MonoBehaviour
         }
         else
         {
+            mainBoost.Stop();
             audioSource.Stop();
         }
     }
@@ -40,17 +46,18 @@ public class Movement : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.A))
         {
-            ApplyRotation(rotationSpeed);
+            ApplyRotation(rotationSpeed, leftThruster);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            ApplyRotation(-rotationSpeed);
+            ApplyRotation(-rotationSpeed, rightThruster);
         }
     }
 
-    private void ApplyRotation(float rotaionThisFrame)
+    private void ApplyRotation(float rotaionThisFrame, ParticleSystem sideBooster)
     {
         playersRigidbody.freezeRotation = true;
+        sideBooster.Play();
         transform.Rotate(Vector3.forward * Time.deltaTime * rotaionThisFrame);
         playersRigidbody.freezeRotation = false;
     }
