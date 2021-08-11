@@ -4,8 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class CollisionHandler : MonoBehaviour
 {
-    [SerializeField] AudioClip success;
-    [SerializeField] AudioClip crash;
+    [SerializeField] AudioClip successClip;
+    [SerializeField] AudioClip crashClip;
 
     [SerializeField] ParticleSystem successParticles;
     [SerializeField] ParticleSystem crashParticles;
@@ -18,6 +18,11 @@ public class CollisionHandler : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
     void OnCollisionEnter(Collision collision)
+    {
+        CheckCollider(collision);
+    }
+
+    void CheckCollider(Collision collision)
     {
         if (isTransitioning) return;
 
@@ -33,23 +38,25 @@ public class CollisionHandler : MonoBehaviour
                 break;
         }
     }
+
     void StartFinishSequence()
     {
-        isTransitioning = true;
-        audioSource.Stop();
-        audioSource.PlayOneShot(success);
-        GetComponent<Movement>().enabled = false;
-        successParticles.Play();
-        Invoke(nameof(LoadNextLevel), GetClipLength(success) + 0.5f);
+        Sequence(successParticles, nameof(LoadNextLevel), successClip);
     }
+
     void StartCrashSequence()
+    {
+        Sequence(crashParticles, nameof(ReloadLevel), crashClip);
+    }
+
+    void Sequence(ParticleSystem successOrCrash, string LoadingMethodName, AudioClip clipToPlay)
     {
         isTransitioning = true;
         audioSource.Stop();
-        audioSource.PlayOneShot(crash);
+        audioSource.PlayOneShot(successClip);
         GetComponent<Movement>().enabled = false;
-        crashParticles.Play();
-        Invoke(nameof(ReloadLevel), GetClipLength(crash) + 0.5f);
+        successOrCrash.Play();
+        Invoke(LoadingMethodName, clipToPlay.length + 0.5f);
     }
 
     void LoadNextLevel()
@@ -68,10 +75,5 @@ public class CollisionHandler : MonoBehaviour
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
-    }
-    
-    float GetClipLength(AudioClip audioClip)
-    {
-        return audioClip.length;
     }
 }
