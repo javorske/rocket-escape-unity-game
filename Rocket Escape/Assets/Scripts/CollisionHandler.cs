@@ -70,7 +70,7 @@ public class CollisionHandler : MonoBehaviour
     {
         isTransitioning = true;
         audioSource.Stop();
-        audioSource.PlayOneShot(successClip);
+        audioSource.PlayOneShot(clipToPlay);
         GetComponent<Movement>().enabled = false;
         successOrCrash.Play();
         Invoke(LoadingMethodName, clipToPlay.length + 0.5f);
