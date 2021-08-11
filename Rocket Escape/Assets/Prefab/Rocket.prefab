@@ -1264,8 +1264,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 175153d14800c564f888854c62979e50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  successClip: {fileID: 8300000, guid: 4e825d83362ee0a4c9fd3b2c00bd82eb, type: 3}
-  crashClip: {fileID: 8300000, guid: a9372c9cf4d5afe4b8fd26b337c0fdab, type: 3}
+  success: {fileID: 8300000, guid: 4e825d83362ee0a4c9fd3b2c00bd82eb, type: 3}
+  crash: {fileID: 8300000, guid: a9372c9cf4d5afe4b8fd26b337c0fdab, type: 3}
   successParticles: {fileID: 489297922754240081}
   crashParticles: {fileID: 5463666467776726158}
 --- !u!1 &8220949855207276836
