@@ -73,7 +73,7 @@ public class CollisionHandler : MonoBehaviour
         audioSource.PlayOneShot(clipToPlay);
         GetComponent<Movement>().enabled = false;
         successOrCrash.Play();
-        Invoke(LoadingMethodName, clipToPlay.length + 0.5f);
+        Invoke(LoadingMethodName, clipToPlay.length + 0.3f);
     }
 
     void LoadNextLevel()
